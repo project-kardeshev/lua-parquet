@@ -28,7 +28,8 @@ build = {
       ["parquet.thrift"] = "src/parquet/thrift.lua",
       ["parquet.schema"] = "src/parquet/schema.lua",
       ["parquet.encoding"] = "src/parquet/encoding.lua",
-      ["parquet.writer"] = "src/parquet/writer.lua"
+      ["parquet.writer"] = "src/parquet/writer.lua",
+      ["parquet_writer"] = "src/parquet_writer.lua"
    }
 }
 test = {
