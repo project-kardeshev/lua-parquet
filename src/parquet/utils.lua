@@ -33,108 +33,14 @@ end
 
 -- Pack a double value into IEEE 754 binary representation
 function utils.write_double(value)
-    local function pack_double(v)
-        -- Simplified IEEE 754 double-precision format packing
-        if v == 0 then
-            return string.rep("\0", 8)  -- Special case for zero
-        end
-        
-        local sign = 0
-        if v < 0 then
-            sign = 0x80
-            v = -v
-        end
-        
-        local mant, expo = math.frexp(v)
-        expo = expo - 1
-        
-        if mant ~= mant then  -- NaN check
-            return "\0\0\0\0\0\0\248\127"  -- NaN representation
-        elseif mant == 1/0 then  -- Infinity check
-            if sign == 0 then
-                return "\0\0\0\0\0\0\240\127"  -- +Infinity
-            else
-                return "\0\0\0\0\0\0\240\255"  -- -Infinity
-            end
-        end
-        
-        mant = mant * 2 - 1  -- Normalize mantissa to [1,2)
-        expo = expo + 1023   -- Bias exponent
-        
-        -- Build mantissa bits
-        local mantissa = math.floor(mant * 2^52 + 0.5)
-        local bytes = {}
-        
-        for i = 0, 5 do
-            bytes[i + 1] = string.char(mantissa & 0xFF)
-            mantissa = mantissa >> 8
-        end
-        
-        -- Add exponent and sign to most significant bytes
-        local expsign = ((expo & 0x7FF) << 4) | (mantissa & 0xF)
-        bytes[7] = string.char(expsign & 0xFF)
-        bytes[8] = string.char(((expsign >> 8) & 0x7F) | sign)
-        
-        return table.concat(bytes)
-    end
-    
-    -- Use string.pack if available (Lua 5.3+)
-    if string.pack then
-        return string.pack("<d", value)
-    else
-        return pack_double(value)
-    end
+    -- This library targets Lua 5.3+, so we can use string.pack directly
+    return string.pack("<d", value)
 end
 
 -- Pack a float value into IEEE 754 binary representation (single precision)
 function utils.write_float(value)
-    -- Use string.pack if available (Lua 5.3+)
-    if string.pack then
-        return string.pack("<f", value)
-    else
-        -- Simplified IEEE 754 single-precision format packing
-        if value == 0 then
-            return string.rep("\0", 4)  -- Special case for zero
-        end
-        
-        local sign = 0
-        if value < 0 then
-            sign = 0x80
-            value = -value
-        end
-        
-        local mant, expo = math.frexp(value)
-        expo = expo - 1
-        
-        if mant ~= mant then  -- NaN check
-            return "\0\0\0\127"  -- NaN representation
-        elseif mant == 1/0 then  -- Infinity check
-            if sign == 0 then
-                return "\0\0\0\127"  -- +Infinity
-            else
-                return "\0\0\0\255"  -- -Infinity
-            end
-        end
-        
-        mant = mant * 2 - 1  -- Normalize mantissa to [1,2)
-        expo = expo + 127    -- Bias exponent
-        
-        -- Build mantissa bits
-        local mantissa = math.floor(mant * 2^23 + 0.5)
-        local bytes = {}
-        
-        for i = 0, 1 do
-            bytes[i + 1] = string.char(mantissa & 0xFF)
-            mantissa = mantissa >> 8
-        end
-        
-        -- Add exponent and sign to most significant bytes
-        local expsign = ((expo & 0xFF) << 7) | (mantissa & 0x7F)
-        bytes[3] = string.char(expsign & 0xFF)
-        bytes[4] = string.char(((expo >> 1) & 0x7F) | sign)
-        
-        return table.concat(bytes)
-    end
+    -- This library targets Lua 5.3+, so we can use string.pack directly
+    return string.pack("<f", value)
 end
 
 -- Binary decoding utilities
