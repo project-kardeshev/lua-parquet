@@ -1,0 +1,34 @@
+# Coverage files
+coverage/
+luacov.*
+
+# Compiled Lua files
+*.lua.c
+*.so
+*.o
+*.a
+*.dll
+*.lib
+*.exp
+*.obj
+*.pyc
+
+# Generated files
+*.out
+*.tmp
+*.output
+
+# LuaRocks generated files
+luarocks/
+.luarocks/
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS specific files
+.DS_Store
+Thumbs.db 

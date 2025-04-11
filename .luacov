@@ -1,0 +1,21 @@
+return {
+  -- Patterns for files to include when reporting
+  include = {
+    "src/"
+  },
+
+  -- Patterns for files to exclude when reporting
+  exclude = {
+    "spec/",
+    "tests/"
+  },
+  
+  -- filename to store stats collected
+  statsfile = "coverage/luacov.stats.out",
+
+  -- filename to store report
+  reportfile = "coverage/luacov.report.out",
+
+  -- Delete stats file after reporting?
+  deletestatsfile = false
+}
